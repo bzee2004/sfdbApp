@@ -1,6 +1,5 @@
 import { useEffect } from "react"
 import { useRaceData } from './useRaceData';
-import Row from './row';
 import './styles.modules.css';
 
 export default function Table(props) {
@@ -13,32 +12,31 @@ export default function Table(props) {
 
     return (
         <>
-        <h1 className="heat-num">Heat {raceData[0].heat}</h1>
+        <h1 className="heat-title">Heat {raceData[0].heat}</h1>
         <table>
             <thead>
                 <tr>
-                    <td>Crew</td>
-                    <td>Lane</td>
-                    <td>Time</td>
-                    <td>Placement</td>
-                    <td>Next Heat</td>
-                    <td>Estimated Start Time</td>
+                    <td className='crew-title'>Crew</td>
+                    <td className='lane-title'>Lane</td>
+                    <td className='time-title'>Time</td>
+                    <td className='placement-title'>Placement</td>
+                    <td className='next-heat-title'>Next Heat</td>
+                    <td className='est-start-title'>Est. Start Time</td>
                 </tr>
             </thead>
             <tbody>
                 {
                     raceData.map((data, i) => {
                         return (
-                            <Row key={i}
-                            crew={data.crew}
-                            lane={data.lane}
-                            time={data.time} 
-                            placement={data.placement}
-                            next_heat={data.next_heat}
-                            estimated_start_time={data.estimated_start_time}
-                            />
-                        )
-                        
+                            <tr>
+                                <td>{data.crew}</td>
+                                <td>{data.lane}</td>
+                                <td>{data.time}</td>
+                                <td>{data.placement}</td>
+                                <td>{data.next_heat}</td>
+                                <td>{data.estimated_start_time}</td>
+                            </tr>
+                        )  
                     })
                 }
             </tbody>

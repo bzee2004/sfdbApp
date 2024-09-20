@@ -1,7 +1,6 @@
 "use client";
 // import Image from "next/image";
 import './styles.modules.css';
-import { supabase } from './stores/supabase.js';
 import { useRaces } from './useRaces';
 import { useEffect } from 'react';
 import RaceBox from './raceBox/raceBox';

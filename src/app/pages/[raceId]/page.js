@@ -15,8 +15,10 @@ export default function Race({ params }) {
 
         return (
             <>
-                <h1>{title}</h1>
-                <a href="/">Home</a>
+                <div className='race-header'>
+                    <h1>{title}</h1>
+                    <a href="/"><button>Return Home</button></a>
+                </div>
                 {
                     maxHeat.map((heat, i) => {
                         return (
