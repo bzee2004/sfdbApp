@@ -1,0 +1,26 @@
+
+.race-box {
+    width: 30vw;
+    min-width: 150px;
+    height: 100px;
+    background: gray;
+    margin: 10px;
+    padding: 5px 10px;
+    overflow: hidden;
+}
+.race-box h1 {
+    font-size: 1.5rem;
+}
+.race-box:hover {
+    animation: hoverAnim 0.1s linear;
+    animation-fill-mode: forwards;
+}
+
+@keyframes hoverAnim {
+    0% {
+
+    }
+    100% {
+        opacity: 45%;
+    }
+}

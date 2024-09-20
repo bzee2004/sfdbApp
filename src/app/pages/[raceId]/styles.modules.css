@@ -1,0 +1,15 @@
+table, th, td {
+    border: 1px solid white;
+}
+table {
+    width: 90%;
+    margin-block: 0 20px;
+    margin-inline: auto
+}
+
+.heat-num {
+    width: 90%;
+    margin: 0 auto;
+    text-align: center;
+    background: gray;
+}
