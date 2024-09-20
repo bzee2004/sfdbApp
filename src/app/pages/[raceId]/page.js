@@ -22,7 +22,7 @@ export default function Race({ params }) {
                 {
                     maxHeat.map((heat, i) => {
                         return (
-                            <Table heat={heat} key={i}/>
+                            <Table heat={heat} key={'heat_'+i}/>
                         )
                     })
                 }

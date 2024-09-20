@@ -28,7 +28,7 @@ export default function Table(props) {
                 {
                     raceData.map((data, i) => {
                         return (
-                            <tr>
+                            <tr key={'row_'+i}>
                                 <td>{data.crew}</td>
                                 <td>{data.lane}</td>
                                 <td>{data.time}</td>
