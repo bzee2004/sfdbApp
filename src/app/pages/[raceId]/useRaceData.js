@@ -1,13 +1,13 @@
-import { supabase } from "@/app/stores/supabase";
+import { supabase } from "@/app/lib/stores/supabase";
 import { useState } from "react";
 
 export const useRaceData = () => {
-    const [raceData, setRaceData] = useState([{heat: 'NA', crew: 'NA', lane: 'NA', time: 'NA', placement: 'NA', next_heat: 'NA', estimated_start_time: 'NA'}]);
+    const [raceData, setRaceData] = useState([{heat: 'NA', crew: 'NA', lane: 'NA', time: 'NA', placement: 'NA', next_heat: 'NA', estimated_start_time: 'NA', race_type: 'NA', display: 'NA'}]);
 
     const getRaceData = async (heat) => {
         const { data, error } = await supabase
         .from('race_results')
-        .select('heat, crew, lane, time, placement, next_heat, estimated_start_time')
+        .select('heat, crew, lane, time, placement, next_heat, estimated_start_time, race_type, display')
         .eq('heat', heat)
         .order('placement', { ascending: true });
         if (error) { console.error(error) }
@@ -30,9 +30,11 @@ export const useRaceData = () => {
         ).subscribe();
     }
 
-    const [maxHeat, setMaxHeat] = useState([]);
 
-    const getMaxHeat = async (raceid) => {
+
+    const [heatList, setMaxHeat] = useState([]);
+
+    const getHeatList = async (raceid) => {
         const { data, error } = await supabase
         .rpc('list_heats', {
             raceid: raceid
@@ -43,8 +45,8 @@ export const useRaceData = () => {
     return {
         raceData,
         getRaceData,
-        maxHeat,
-        getMaxHeat,
+        heatList,
+        getHeatList,
         subscribeToRaceData
     }
 }

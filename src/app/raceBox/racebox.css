@@ -1,9 +1,10 @@
 
 .race-box {
-    width: 30vw;
+    width: 25vw;
     min-width: 150px;
     height: 100px;
-    background: gray;
+    background: var(--foreground);
+    color: var(--background);
     margin: 10px;
     padding: 5px 10px;
     overflow: hidden;

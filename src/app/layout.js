@@ -1,4 +1,5 @@
 import { Roboto_Condensed } from 'next/font/google';
+import Navbar from './lib/nav/page';
 
 import "./globals.css";
 
@@ -16,10 +17,15 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
+      <head>
+        <link rel='icon' href='/favicon.ico' sizes='any'/>
+      </head>
       <body
         className={`${robotoCondensed.variable} antialiased`}
       >
+        <Navbar />
         {children}
+        <footer></footer>
       </body>
     </html>
   );
