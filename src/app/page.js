@@ -3,30 +3,51 @@
 import './styles.modules.css';
 import { useRaces } from './useRaces';
 import { useEffect } from 'react';
-import RaceBox from './raceBox/raceBox';
+import { useRaceData } from './pages/[raceId]/useRaceData';
+import Table from './pages/[raceId]/table';
 
-export default function Home() {
+import { useNavigate } from 'react-router-dom';
 
-  const { races, getRaces, subscribeToRaces } = useRaces();
+let forceRedirect;
+
+export default function Landing() {
+
+  // const navigate = useNavigate()
+  // useEffect(() => {
+  //   if (forceRedirect != true) {
+  //     return navigate('./pages/[1]');
+  //   }
+  // })
+
+  const { race, getCurrentRace, subscribeToRaces } = useRaces();
+  const { heatList, getHeatList } = useRaceData();
   
-    useEffect(() => {
-      subscribeToRaces();
-      getRaces();
-    }, []);
+
+  const raceId = race[0].max;
+  const title = race[0].racename;
+
+  useEffect(() => {
+    subscribeToRaces();
+    getCurrentRace();
+  }, []);
+
+  useEffect(() => {
+    getHeatList(raceId);
+  })
 
   return (
     <>
-      <h1 className="header">Live Race Results</h1>
-      <div className="race-display">
-        {races.map((race, i) => {
-            return (
-                <RaceBox key={'race_' + i}
-                  displayText={race.raceName}
-                  raceId={race.raceId}
-                />
-            )
-        })}
-      </div>
+      <h1 className="header">NCIDBF Race Results</h1>
+          <div className='race-header'>
+              <h1>{title}</h1>
+          </div>
+          {
+              heatList.map((heat, i) => {
+                  return (
+                      <Table heat={heat} key={'heat_'+i}/>
+                  )
+              })
+          }    
     </>
   );
 }

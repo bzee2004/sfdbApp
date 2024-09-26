@@ -1,0 +1,99 @@
+/* ---------  PAGE  ---------- */
+.race-header {
+    text-align: center;
+    margin-block: 20px;
+}
+.race-header button {
+    background: var(--foreground);
+    color: var(--background);
+    padding-inline: 10px;
+    border-radius: 5px;
+}
+
+
+/* ---------  TABLE  ---------- */
+table, th, td {
+    border: 2px solid gray;
+    padding-inline: 5px;
+}
+table {
+    width: 95%;
+    margin-block: 0 40px;
+    margin-inline: auto
+}
+tr {
+    font-size: 0.8rem;
+    color: #2b2926;
+    background-color: var(--foreground);
+}
+tr:hover {
+    background-color: rgb(190, 186, 186);
+}
+
+.heat-title {
+    width: 95%;
+    margin: 0 auto;
+    text-align: center;
+    background: #c1d8f6;
+    color: var(--background);
+    font-size: 1.1rem;
+    border-top: 3px solid #6ca5f7;
+}
+
+.crew-title {
+    width: 25%;
+}
+.lane-title {
+    width: 5%;
+    cursor: pointer;
+}
+.time-title {
+    width: 15%;
+}
+.placement-title {
+    width: 3%;
+}
+.next-heat-title {
+    width: 5%;
+}
+.est-start-title {
+    width: 20%;
+}
+
+/* Small Tablet */
+@media screen and (min-width: 620px) {
+    .heat-title, tr {
+        font-size: 1.1rem;
+    }
+}
+
+/* Medium Screen */
+@media screen and (min-width: 800px) {
+    table {
+        width: 80%;
+    }
+    .heat-title {
+        width: 80%;
+    }
+    .heat-title, tr {
+        font-size: 1.3rem;
+    }
+    .crew-title {
+        width: 20%;
+    }
+    .lane-title {
+        width: 5%;
+    }
+    .time-title {
+        width: 10%;
+    }
+    .placement-title {
+        width: 10%;
+    }
+    .next-heat-title {
+        width: 10%;
+    }
+    .est-start-title {
+        width: 10%;
+    }
+}

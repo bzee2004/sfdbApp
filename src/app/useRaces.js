@@ -1,7 +1,8 @@
-import { supabase } from "./stores/supabase"
+import { supabase } from "./lib/stores/supabase"
 import { useState } from "react";
 
 export const useRaces = () => {
+    const [race, setRace] = useState([{'max': -1, 'racename': 'N/A'}]);
     const [races, setRaces] = useState([]);
 
     const getRaces = async () => {
@@ -12,6 +13,14 @@ export const useRaces = () => {
         if (error) {console.error(error)}
 
         setRaces(data);
+    }
+
+    const getCurrentRace = async () => {
+        const { data, error } = await supabase
+        .rpc('get_current_race')
+        if (error) {console.error(error)}
+
+        setRace(data);
     }
 
     const subscribeToRaces = async () => {
@@ -31,8 +40,10 @@ export const useRaces = () => {
     }
 
     return {
+        race,
         races,
         getRaces,
+        getCurrentRace,
         subscribeToRaces
     }
 }

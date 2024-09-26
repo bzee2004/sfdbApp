@@ -1,0 +1,16 @@
+.race-display {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    width: 95%;
+    margin: 20px auto;
+}
+
+
+@media screen and (min-width: 800px) {
+    .race-display {
+        justify-content: space-between;
+        gap: 20px;
+    }
+    
+}

@@ -1,6 +1,6 @@
 import { useEffect } from "react"
 import { useRaceData } from './useRaceData';
-import './styles.modules.css';
+import './race_instance.css';
 
 export default function Table(props) {
     const {raceData, getRaceData, subscribeToRaceData} = useRaceData();
@@ -8,11 +8,11 @@ export default function Table(props) {
     useEffect(() => {
         subscribeToRaceData();
         getRaceData(props.heat);
-    }, [])
+    }, [raceData])
 
     return (
         <>
-        <h1 className="heat-title">Heat {raceData[0].heat}</h1>
+        <h1 className="heat-title"><b>Heat {raceData[0].heat}: {raceData[0].race_type}</b></h1>
         <table>
             <thead>
                 <tr>
@@ -27,9 +27,10 @@ export default function Table(props) {
             <tbody>
                 {
                     raceData.map((data, i) => {
+                        if (data.display != true) {return}
                         return (
                             <tr key={'row_'+i}>
-                                <td>{data.crew}</td>
+                                <td><b>{data.crew}</b></td>
                                 <td>{data.lane}</td>
                                 <td>{data.time}</td>
                                 <td>{data.placement}</td>
