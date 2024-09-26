@@ -29,11 +29,11 @@ export default function Landing() {
   useEffect(() => {
     subscribeToRaces();
     getCurrentRace();
-  }, []);
+  }, [race]);
 
   useEffect(() => {
     getHeatList(raceId);
-  })
+  }, [heatList])
 
   return (
     <>
