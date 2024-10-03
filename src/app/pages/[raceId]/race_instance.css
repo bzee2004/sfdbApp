@@ -3,11 +3,25 @@
     text-align: center;
     margin-block: 20px;
 }
+.race-header h1 {
+    font-size: 5vw;
+}
+#crews {
+    color: gray;
+    margin: 20px 10px 0 10px;
+}
 .race-header button {
     background: var(--foreground);
     color: var(--background);
     padding-inline: 10px;
     border-radius: 5px;
+}
+.heats {
+    min-height: 100vh;
+}
+#default-option {
+    position: sticky;
+    top: 0;
 }
 
 
@@ -69,6 +83,9 @@ tr:hover {
 
 /* Medium Screen */
 @media screen and (min-width: 800px) {
+    .race-header h1 {
+        font-size: 3vw;
+    }
     table {
         width: 80%;
     }

@@ -1,18 +1,29 @@
-import { useEffect } from "react"
+import { useEffect, useState, useRef } from "react"
 import { useRaceData } from './useRaceData';
+import { supabase } from "@/app/lib/stores/supabase";
 import './race_instance.css';
 
-export default function Table(props) {
-    const {raceData, getRaceData, subscribeToRaceData} = useRaceData();
+export default function Table({data}) {
+    const {raceData, setRaceData, getRaceData, subscribeToRaceData} = useRaceData();
+    const [currentCrew, setCurrentCrew] = useState('*');
+    const mountedRef = useRef();
 
     useEffect(() => {
-        subscribeToRaceData();
-        getRaceData(props.heat);
+        // if (currentCrew == data.crew) {
+            getRaceData(data.heat, data.crew)
+        // }
+    }, [data.crew])
+
+    useEffect(() => {
+        setRaceData(raceData);
     }, [raceData])
 
+    // useEffect(() => {
+    //     subscribeToRaceData();
+    // }, [supabase, raceData, setRaceData])
     return (
         <>
-        <h1 className="heat-title"><b>Heat {raceData[0].heat}: {raceData[0].race_type}</b></h1>
+        <h1 className="heat-title"><b>Heat {data.heat}: {data.race_type}</b></h1>
         <table>
             <thead>
                 <tr>
@@ -21,23 +32,24 @@ export default function Table(props) {
                     <td className='time-title'>Time</td>
                     <td className='placement-title'>Placement</td>
                     <td className='next-heat-title'>Next Heat</td>
-                    <td className='est-start-title'>Est. Start Time</td>
+                    {/* <td className='est-start-title'>Est. Start Time</td> */}
                 </tr>
             </thead>
             <tbody>
                 {
-                    raceData.map((data, i) => {
-                        if (data.display != true) {return}
-                        return (
-                            <tr key={'row_'+i}>
-                                <td><b>{data.crew}</b></td>
-                                <td>{data.lane}</td>
-                                <td>{data.time}</td>
-                                <td>{data.placement}</td>
-                                <td>{data.next_heat}</td>
-                                <td>{data.estimated_start_time}</td>
-                            </tr>
-                        )  
+                    raceData.map((data, index) => {
+                        if (data.display != false) {
+                            return (
+                                <tr key={'row_'+index}>
+                                    <td><b>{data.crew}</b></td>
+                                    <td>{data.lane}</td>
+                                    <td>{data.time}</td>
+                                    <td>{data.placement}</td>
+                                    <td>{data.next_heat}</td>
+                                    {/* <td>{data.estimated_start_time}</td> */}
+                                </tr>
+                            )  
+                        }
                     })
                 }
             </tbody>
@@ -45,3 +57,4 @@ export default function Table(props) {
         </> 
     )
 }
+

@@ -2,52 +2,92 @@
 // import Image from "next/image";
 import './styles.modules.css';
 import { useRaces } from './useRaces';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useRaceData } from './pages/[raceId]/useRaceData';
 import Table from './pages/[raceId]/table';
-
-import { useNavigate } from 'react-router-dom';
-
-let forceRedirect;
+import { Truculenta } from 'next/font/google';
 
 export default function Landing() {
 
-  // const navigate = useNavigate()
-  // useEffect(() => {
-  //   if (forceRedirect != true) {
-  //     return navigate('./pages/[1]');
-  //   }
-  // })
-
   const { race, getCurrentRace, subscribeToRaces } = useRaces();
-  const { heatList, getHeatList } = useRaceData();
-  
+  const { heatList, setHeatList, getHeatList, subscribeToHeatList } = useRaceData();
+  const [ prevHeatList, setPrevHeatList ] = useState([]);
+  const { crewList, getAllCrews } = useRaceData();
 
-  const raceId = race[0].max;
-  const title = race[0].racename;
+  const [ selectCrew, setSelectCrew ] = useState('*');  
+  const [ newCrew, setNewCrew ] = useState('');
+
+  const filterCrew = (value) => setSelectCrew(value)
+
+  const title = race[0].racename, raceId = race[0].max;
+  const [ isLoading, setIsLoading ] = useState(false)
 
   useEffect(() => {
-    subscribeToRaces();
-    getCurrentRace();
+    if (race[0].max < 1) {
+      getCurrentRace();
+      subscribeToRaces();
+    }
   }, [race]);
 
   useEffect(() => {
-    getHeatList(raceId);
-  }, [heatList])
+    if (JSON.stringify(heatList) != JSON.stringify(prevHeatList) || heatList.length < 1) {
+      getHeatList(raceId, selectCrew);
+      setPrevHeatList(heatList)
+      setIsLoading(false);
+    }
+  }, [heatList, race])
+
+  useEffect(() => {
+    if (selectCrew != '*' || newCrew == '*') {
+      setHeatList([]);
+      setNewCrew(selectCrew);
+      setIsLoading(true);
+    }
+    else {setNewCrew(selectCrew);}
+  }, [selectCrew, newCrew])
+
+  useEffect(() => {
+    if (crewList.length < 1) {
+      getAllCrews(raceId);
+    }
+  }, [crewList])
 
   return (
     <>
       <h1 className="header">NCIDBF Race Results</h1>
           <div className='race-header'>
-              <h1>{title}</h1>
-          </div>
-          {
-              heatList.map((heat, i) => {
-                  return (
-                      <Table heat={heat} key={'heat_'+i}/>
-                  )
+            <h1>{title}</h1>
+            <label htmlFor='crews'>Filter by crew:</label>
+            <select name='crews' id='crews' 
+            onChange={({target}) => {target.value != 'choose_option' ? filterCrew(target.value) : filterCrew('*')}}
+            >
+            <option selected value="choose_option" id='default-option'>-- DEFAULT --</option>
+              {
+              crewList.map((crew, index) => {
+                return (
+                  <option key={'option_'+index} id={'option_'+index} value={crew}>
+                    {crew}
+                  </option>
+                )
               })
+              }
+            </select>
+          </div>
+          <div className='heats'>
+          { 
+          // isLoading 
+          // ? 
+          // <div>Loading...</div> 
+          // :
+              heatList.map((i, index) => {
+                  return (
+                      <Table key={'heat_'+index} 
+                      data={{heat: i.heat, race_type: i.race_type, crew: selectCrew}}
+                      />
+                  )
+              })              
           }    
+          </div>
     </>
   );
-}
+  }

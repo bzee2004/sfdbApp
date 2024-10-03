@@ -12,7 +12,7 @@ export default function Home() {
     useEffect(() => {
         subscribeToRaces();
         getRaces();
-    }, [])
+    }, [races])
 
     return ( 
         <>

@@ -3,7 +3,7 @@ import { useState } from "react";
 
 export const useRaces = () => {
     const [race, setRace] = useState([{'max': -1, 'racename': 'N/A'}]);
-    const [races, setRaces] = useState([]);
+    const [races, setRaces] = useState([{'max': -1, 'racename': 'N/A'}]);
 
     const getRaces = async () => {
         const { data, error } = await supabase
@@ -24,7 +24,7 @@ export const useRaces = () => {
     }
 
     const subscribeToRaces = async () => {
-        supabase
+        const taskListener = supabase
         .channel('table_db_changes')
         .on(
         'postgres_changes',
@@ -37,6 +37,8 @@ export const useRaces = () => {
             races[payload['old']['raceId']] = payload['new']['raceName'];
         }
         ).subscribe();
+
+        return taskListener.unsubscribe();
     }
 
     return {
