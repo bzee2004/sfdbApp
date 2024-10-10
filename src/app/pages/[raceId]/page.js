@@ -1,5 +1,5 @@
 'use client';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useRaceData } from './useRaceData';
 import Table from './table';
 
@@ -9,21 +9,22 @@ export default function Race({ params }) {
     const raceId = (params.raceId).slice(params.raceId.indexOf('-')+1);
 
     const {heatList, getHeatList} = useRaceData();
-    
-    useEffect(() => {
-        getHeatList(raceId);
-    }, [])
+    const [ selectCrew, setSelectCrew ] = useState('*');
 
+    useEffect(() => {
+        getHeatList(raceId, selectCrew);
+    }, [])
         return (
             <>
                 <div className='race-header'>
                     <h1>{title}</h1>
-                    {/* <a href="/"><button>Return Home</button></a> */}
                 </div>
                 {
-                    heatList.map((heat, i) => {
+                    heatList.map((i, index) => {
                         return (
-                            <Table heat={heat} key={'heat_'+i}/>
+                            <Table key={'heat_'+index} 
+                            data={{heat: i.heat, race_type: i.race_type, race_id: raceId, crew: selectCrew, past_race: true}}
+                            /> 
                         )
                     })
                 }
