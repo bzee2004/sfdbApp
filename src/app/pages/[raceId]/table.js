@@ -40,7 +40,7 @@ export default function Table({data}) {
                                 <tr key={'row_'+index}>
                                     <td><b>{data.crew}</b></td>
                                     <td>{data.lane}</td>
-                                    <td>{data.time}</td>
+                                    <td>{data.race_time}</td>
                                     <td>{data.placement}</td>
                                     <td>{data.next_heat}</td>
                                     {/* <td>{data.estimated_start_time}</td> */}
