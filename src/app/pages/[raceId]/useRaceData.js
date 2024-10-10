@@ -4,13 +4,13 @@ import { useState } from "react";
 export const useRaceData = () => {
     const [raceData, setRaceData] = useState([{heat: 'NA', crew: 'NA', lane: 'NA', time: 'NA', placement: 'NA', next_heat: 'NA', estimated_start_time: 'NA', race_type: 'NA', display: true}]);
 
-    const getRaceData = async (heat, selectCrew) => {
+    const getRaceData = async (heat, selectCrew, raceId) => {
         if (selectCrew == '*') {
             const { data, error } = await supabase
-            .from('race_results')
-            .select('heat, crew, lane, time, placement, next_heat, race_type, display')
-            .eq('heat', heat)
-            .order('placement', { ascending: true });
+            .rpc('get_race_data_all_crews', {
+                selectheat: heat,
+                raceid: raceId
+            })
 
             if (error) { console.error(error) }
             if (data) { setRaceData(data) }
@@ -19,7 +19,8 @@ export const useRaceData = () => {
             const { data, error } = await supabase
             .rpc('get_race_data', {
                 selectheat: heat,
-                selectcrew: selectCrew
+                selectcrew: selectCrew,
+                raceid: raceId
             })
             if (error) { console.error(error) }
             if (data) { setRaceData(data) }
@@ -82,11 +83,14 @@ export const useRaceData = () => {
             table: 'race_results',
         },
         (payload) => {
-            raceData[payload['old']['raceId']] = payload['new']['heat'];
+            setHeatList([...heatList, payload.new])
+            // console.log(payload);
         }
         ).subscribe();
 
-        return taskListener.unsubscribe();
+        return () => {
+            supabase.removeChannel(taskListener);
+        }
     }
 
     const [ crewList, setCrewList ] = useState([]); 

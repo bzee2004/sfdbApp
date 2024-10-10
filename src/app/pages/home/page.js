@@ -10,8 +10,10 @@ export default function Home() {
   const { races, getRaces, subscribeToRaces } = useRaces();
 
     useEffect(() => {
-        subscribeToRaces();
-        getRaces();
+        if (races[0].max < 1) {
+            subscribeToRaces();
+            getRaces();
+        }
     }, [races])
 
     return ( 

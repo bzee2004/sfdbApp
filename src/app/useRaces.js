@@ -3,7 +3,7 @@ import { useState } from "react";
 
 export const useRaces = () => {
     const [race, setRace] = useState([{'max': -1, 'racename': 'N/A'}]);
-    const [races, setRaces] = useState([{'max': -1, 'racename': 'N/A'}]);
+    const [races, setRaces] = useState([{'max': -1, 'racename': 'N/A', 'raceId': -1}]);
 
     const getRaces = async () => {
         const { data, error } = await supabase
@@ -34,7 +34,8 @@ export const useRaces = () => {
             table: 'racenames',
         },
         (payload) => {
-            races[payload['old']['raceId']] = payload['new']['raceName'];
+            console.log(payload);
+            setRaces([...races, payload.new]);
         }
         ).subscribe();
 

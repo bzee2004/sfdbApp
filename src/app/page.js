@@ -1,15 +1,14 @@
 "use client";
-// import Image from "next/image";
 import './styles.modules.css';
 import { useRaces } from './useRaces';
 import { useEffect, useState } from 'react';
 import { useRaceData } from './pages/[raceId]/useRaceData';
+import { supabase } from './lib/stores/supabase';
 import Table from './pages/[raceId]/table';
-import { Truculenta } from 'next/font/google';
 
 export default function Landing() {
 
-  const { race, getCurrentRace, subscribeToRaces } = useRaces();
+  const { race, races, getCurrentRace, getRaces, subscribeToRaces } = useRaces();
   const { heatList, setHeatList, getHeatList, subscribeToHeatList } = useRaceData();
   const [ prevHeatList, setPrevHeatList ] = useState([]);
   const { crewList, getAllCrews } = useRaceData();
@@ -19,15 +18,22 @@ export default function Landing() {
 
   const filterCrew = (value) => setSelectCrew(value)
 
-  const title = race[0].racename, raceId = race[0].max;
+  const current_race = races[races.length-1];
+  const title = current_race['raceName'], raceId = current_race['raceId'];
+  // const title = race[0].racename, raceId = race[0].max;
   const [ isLoading, setIsLoading ] = useState(false)
 
+  // useEffect(() => {
+  //   if (race[0].max < 1) {
+  //     getCurrentRace();
+  //   }
+  // }, [race]);
+
   useEffect(() => {
-    if (race[0].max < 1) {
-      getCurrentRace();
-      subscribeToRaces();
+    if (races[0].max == -1) {
+      getRaces();
     }
-  }, [race]);
+  }, [races])
 
   useEffect(() => {
     if (JSON.stringify(heatList) != JSON.stringify(prevHeatList) || heatList.length < 1) {
@@ -52,6 +58,14 @@ export default function Landing() {
     }
   }, [crewList])
 
+  useEffect(() => {
+    if (heatList.length >= 1) {
+      setHeatList([]);
+    }
+    subscribeToHeatList();
+    subscribeToRaces();
+  }, [supabase])
+
   return (
     <>
       <h1 className="header">NCIDBF Race Results</h1>
@@ -61,7 +75,7 @@ export default function Landing() {
             <select name='crews' id='crews' 
             onChange={({target}) => {target.value != 'choose_option' ? filterCrew(target.value) : filterCrew('*')}}
             >
-            <option selected value="choose_option" id='default-option'>-- DEFAULT --</option>
+            <option value="choose_option" id='default-option'>-- DEFAULT --</option>
               {
               crewList.map((crew, index) => {
                 return (
@@ -82,7 +96,7 @@ export default function Landing() {
               heatList.map((i, index) => {
                   return (
                       <Table key={'heat_'+index} 
-                      data={{heat: i.heat, race_type: i.race_type, crew: selectCrew}}
+                      data={{heat: i.heat, race_type: i.race_type, race_id: raceId, crew: selectCrew}}
                       />
                   )
               })              

@@ -5,22 +5,19 @@ import './race_instance.css';
 
 export default function Table({data}) {
     const {raceData, setRaceData, getRaceData, subscribeToRaceData} = useRaceData();
-    const [currentCrew, setCurrentCrew] = useState('*');
-    const mountedRef = useRef();
 
     useEffect(() => {
-        // if (currentCrew == data.crew) {
-            getRaceData(data.heat, data.crew)
-        // }
-    }, [data.crew])
+        getRaceData(data.heat, data.crew, data.race_id)
+    }, [data.heat])
 
     useEffect(() => {
         setRaceData(raceData);
-    }, [raceData])
+    }, [raceData, data])
 
     // useEffect(() => {
     //     subscribeToRaceData();
-    // }, [supabase, raceData, setRaceData])
+    // }, [supabase, data])
+    
     return (
         <>
         <h1 className="heat-title"><b>Heat {data.heat}: {data.race_type}</b></h1>
